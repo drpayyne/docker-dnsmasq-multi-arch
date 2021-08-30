@@ -3,21 +3,20 @@ LABEL maintainer="adarsh.apple@icloud.com"
 
 ARG TARGETARCH
 
-# webproc release settings
-ENV WEBPROC_URL https://github.com/jpillora/webproc/releases/download/v0.4.0/webproc_0.4.0_linux_${TARGETARCH}.gz
+ENV WEBPROC_VERSION 0.4.0
 
-# fetch dnsmasq and webproc binary
 RUN apk update \
 	&& apk --no-cache add dnsmasq \
 	&& apk add --no-cache --virtual .build-deps curl \
-	&& curl -sL $WEBPROC_URL | gzip -d - > /usr/local/bin/webproc \
+	&& curl -sL "https://github.com/jpillora/webproc/releases/download/v${WEBPROC_VERSION}/webproc_${WEBPROC_VERSION}_linux_${TARGETARCH}.gz" | gzip -d - > /usr/local/bin/webproc \
 	&& chmod +x /usr/local/bin/webproc \
 	&& apk del .build-deps
 
-#configure dnsmasq
-RUN mkdir -p /etc/default/
-RUN echo -e "ENABLED=1\nIGNORE_RESOLVCONF=yes" > /etc/default/dnsmasq
-COPY dnsmasq.conf /etc/dnsmasq.conf
+RUN echo $'# Use CloudFlare NS Servers\n\
+server=1.0.0.1\n\
+server=1.1.1.1\n# Serve all .company queries using a specific nameserver\n\
+server=/company/10.0.0.1\n# Define Hosts DNS Records\n\
+address=/myhost.company/10.0.0.2\n' > /etc/dnsmasq.conf
 
-#run!
-ENTRYPOINT ["webproc","-c","/etc/dnsmasq.conf","--","dnsmasq","--no-daemon"]
+ENTRYPOINT ["webproc", "-c", "/etc/dnsmasq.conf", "-c", "/etc/hosts", "--", "dnsmasq", "--keep-in-foreground", "--log-queries", "--no-resolv", "--strict-order"]
+
