@@ -1,9 +1,10 @@
 # docker-dnsmasq
 
-dnsmasq in a docker container, configurable via a [simple web UI](https://github.com/jpillora/webproc)
+> This is a multi-arch fork of [jpillora/dnsmasq](https://github.com/jpillora/docker-dnsmasq) with support for AMD64 and ARM64
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/jpillora/dnsmasq.svg)][dockerhub]
-[![Image Size](https://images.microbadger.com/badges/image/jpillora/dnsmasq.svg)][dockerhub]
+[![Multi Arch](https://img.shields.io/badge/multi%20arch%3F-yes-success)][dockerhub]
+
+dnsmasq in a docker container, configurable via a [simple web UI](https://github.com/jpillora/webproc)
 
 ### Usage
 
@@ -81,4 +82,4 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[dockerhub]: https://hub.docker.com/r/jpillora/dnsmasq/
+[dockerhub]: https://hub.docker.com/r/drpayyne/docker-dnsmasq-multi-arch
